@@ -162,6 +162,7 @@ const port = 0;
 const chrome = spawn(chromePath, [
   '--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check',
   '--disable-extensions', '--disable-background-networking', '--mute-audio',
+  '--no-sandbox', '--disable-dev-shm-usage',   // required for headless Chrome in a cloud/container (e.g. Cowork)
   `--user-data-dir=${userDataDir}`, '--remote-debugging-port=0', 'about:blank',
 ], { stdio: ['ignore', 'ignore', 'pipe'] });
 
