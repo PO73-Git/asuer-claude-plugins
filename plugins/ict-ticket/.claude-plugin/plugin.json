@@ -1,0 +1,6 @@
+{
+  "name": "ict-ticket",
+  "version": "0.1.0",
+  "description": "Drive the internal ICT ticket Jotform end-to-end via Playwright MCP. Asks clarifying questions, shows a preview, fills the form across all 4 pages, and pauses for explicit confirmation before submission.",
+  "author": { "name": "Asuer", "email": "paul@asuer.co.za" }
+}

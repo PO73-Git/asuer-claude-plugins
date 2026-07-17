@@ -1,0 +1,25 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "asuer-plugins",
+  "description": "Asuer & BBB internal Claude Code plugins — branded document generation and internal tooling.",
+  "owner": {
+    "name": "Asuer",
+    "email": "paul@asuer.co.za"
+  },
+  "plugins": [
+    {
+      "name": "asuer-pdf",
+      "description": "Create Asuer-branded PDF documents — policy/legal, business letter, internal memo, meeting agenda/minutes, specification/report — from HTML, rendered to A4 with the Asuer letterhead, Poppins, brand blue and a repeating branded footer. Cover and no-cover variants of every type.",
+      "author": { "name": "Asuer", "email": "paul@asuer.co.za" },
+      "category": "productivity",
+      "source": "./plugins/asuer-pdf"
+    },
+    {
+      "name": "ict-ticket",
+      "description": "Drive the internal ICT ticket Jotform end-to-end via Playwright MCP. Asks clarifying questions, shows a preview, fills the form across all 4 pages, and pauses for explicit confirmation before submission.",
+      "author": { "name": "Asuer", "email": "paul@asuer.co.za" },
+      "category": "productivity",
+      "source": "./plugins/ict-ticket"
+    }
+  ]
+}
