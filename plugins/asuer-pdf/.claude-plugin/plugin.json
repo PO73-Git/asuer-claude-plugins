@@ -1,6 +1,6 @@
 {
   "name": "asuer-pdf",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Create Asuer-branded PDF documents (policy/legal, business letter, internal memo, meeting agenda/minutes, specification/report) from HTML, rendered to A4 with the Asuer letterhead, Poppins, brand blue and a repeating branded footer. Cover and no-cover variants of every type.",
   "author": { "name": "Asuer", "email": "paul@asuer.co.za" }
 }

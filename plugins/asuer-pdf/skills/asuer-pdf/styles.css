@@ -65,7 +65,7 @@ body{
 /* ---------- Body typography ---------- */
 p{margin:0 0 9px;}
 h2,.h2{font-size:14pt;font-weight:700;color:var(--blue);margin:20px 0 6px;line-height:1.25;}
-h3,.h3{font-size:11.5pt;font-weight:600;color:var(--ink);margin:16px 0 5px;}
+h3,.h3{font-size:12pt;font-weight:600;color:var(--blue);margin:16px 0 5px;}
 strong,b{font-weight:600;}
 a{color:var(--blue);}
 hr{border:0;border-top:1px solid var(--rule);margin:16px 0;}
@@ -99,6 +99,23 @@ ul.spaced>li{margin-bottom:8px;}
 /* ---------- Ordered list (plain, for clauses) ---------- */
 ol{margin:8px 0 10px;padding-left:20px;}
 ol>li{margin:0 0 6px;padding-left:4px;line-height:1.5;}
+
+/* ---------- Legal / policy clause numbering ---------- */
+ol.roman{list-style:lower-roman;}
+ol.alpha{list-style:lower-alpha;}
+.subclause{margin:13px 0 5px;font-weight:600;color:var(--ink);}   /* e.g. "3.1.1  Reporting" */
+
+/* Explicit hierarchical clause numbers (e.g. 2.1, 4.3.2.1) — blue numeral, hanging indent */
+ul.clauses{list-style:none;padding-left:0;margin:8px 0 10px;}
+ul.clauses>li{position:relative;padding-left:40px;margin:0 0 6px;line-height:1.5;}
+ul.clauses>li>.n{position:absolute;left:0;top:0;font-weight:600;color:var(--blue);}
+ul.clauses>li.l2{padding-left:72px;}
+ul.clauses>li.l2>.n{left:22px;}
+ul.clauses>li.l3{padding-left:104px;}
+ul.clauses>li.l3>.n{left:46px;}
+ul.clauses>li.l4{padding-left:136px;}
+ul.clauses>li.l4>.n{left:70px;}
+ul.clauses>li::before{content:none;}   /* clause lists use the .n numeral, not the bullet dot */
 
 /* ---------- Tables ---------- */
 table{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:9.5pt;}
