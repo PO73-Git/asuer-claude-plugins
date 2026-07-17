@@ -1,68 +1,60 @@
-# Org rollout — Asuer Claude Code plugins (managed settings)
+# Org rollout — Asuer PDF skill
 
-Goal: every Asuer/BBB machine gets the `asuer-pdf` (and `ict-ticket`) plugin
-automatically, with no per-user action. Claude Code **managed settings** enforce this.
+Goal: everyone on the team has the `asuer-pdf` skill, so Claude produces on-brand PDFs
+whenever they ask for a document or PDF. **No GitHub or account is required.**
 
-## How it works
+A Claude Code "skill" is just a folder in `~/.claude/skills/`. Claude auto-discovers it and
+auto-triggers it from its description. So distribution is simply: get the folder onto each
+machine. Pick the method that fits how your team already receives files.
 
-Claude Code reads a system-level `managed-settings.json` that IT deploys. It takes
-precedence over user settings and cannot be turned off by the user. Ours declares the
-`asuer-plugins` marketplace (pointing at the GitHub repo) and enables the plugins. On next
-launch, every user's Claude Code fetches the marketplace and activates the plugins.
+## Method A — Shared-drive installer (recommended, no GitHub)
 
-## Step 1 — Publish the repo (once, maintainer)
+1. Put [`dist/asuer-pdf-skill.zip`](../dist/asuer-pdf-skill.zip) on your shared drive
+   (Google Drive / SharePoint) where the team can reach it.
+2. Each teammate: download the zip, unzip it, and **double-click `install.command`**.
+   - First time on macOS: if it's blocked, right-click the file, choose **Open**, then
+     **Open** again. (Unsigned internal script; this is the standard one-time approval.)
+   - Terminal/Linux alternative: `bash install.sh`.
+3. Quit and reopen Claude Code. Done.
 
-The marketplace must be a git URL every machine can reach (a local folder will not resolve
-on other laptops). Create and push this repo:
+That copies the skill to `~/.claude/skills/asuer-pdf/`. From then on, asking Claude to
+"make a doc" or "create a PDF" produces a branded Asuer document.
 
-```bash
-cd ~/asuer-claude-plugins
-gh repo create PO73-Git/asuer-claude-plugins --private --source=. --remote=origin --push
+## Method B — Zero-touch via MDM (no GitHub, no user action)
+
+If you have MDM (Jamf / Intune / Kandji), deploy the **`skill/`** folder (inside
+`dist/asuer-pdf-skill/`) to this path on every machine:
+
+```
+~/.claude/skills/asuer-pdf/
 ```
 
-Or with plain git (after creating the empty repo on GitHub):
+Push it as a managed folder. No user action, no GitHub. Re-push to update.
 
-```bash
-cd ~/asuer-claude-plugins
-git remote add origin git@github.com:PO73-Git/asuer-claude-plugins.git
-git push -u origin main
-```
+## Method C — GitHub marketplace (optional, only if the team uses GitHub)
 
-If you publish under an Asuer GitHub **org** instead of a personal account, use that
-owner (e.g. `asuer/claude-plugins`) and update `repo` in `managed-settings.json` to match.
+For teams comfortable with GitHub, the plugin can be installed from a marketplace repo, and
+`deploy/managed-settings.json` can auto-provision it. This route **requires each machine to
+reach the GitHub repo** (so skip it if anyone lacks GitHub access — use Method A or B).
 
-## Step 2 — Deploy managed-settings.json (IT / MDM)
+- Publish: `gh repo create <owner>/asuer-claude-plugins --private --source=. --push`
+- Managed settings path: macOS `/Library/Application Support/ClaudeCode/managed-settings.json`,
+  Linux `/etc/claude-code/managed-settings.json`, Windows `C:\ProgramData\ClaudeCode\managed-settings.json`.
+- Update `repo` in `managed-settings.json` to match the published repo.
 
-Push [`managed-settings.json`](./managed-settings.json) (in this folder) to the managed
-path on every machine:
+## Requirements (any method)
 
-| OS | Path |
-|---|---|
-| macOS | `/Library/Application Support/ClaudeCode/managed-settings.json` |
-| Linux | `/etc/claude-code/managed-settings.json` |
-| Windows | `C:\ProgramData\ClaudeCode\managed-settings.json` |
+Each machine needs **Google Chrome** (or Chromium) installed and **Node.js 22+** (the
+renderer uses Node's built-in DevTools client, so no `npm install`). Internet at first
+render for the Poppins font.
 
-Deploy it with your MDM (Jamf / Intune / Kandji) as a managed file at that path. No user
-action is required; it applies on the next Claude Code launch.
+## Verify
 
-## Private-repo access
+Open Claude Code and ask: *"Make an Asuer privacy policy PDF from this text …"*. Confirm a
+branded PDF is produced. Requirements warnings, if any, are printed by the installer.
 
-Because the repo is **private**, each machine's Claude Code must be able to read it from
-GitHub. Options:
-- Ensure users are signed in to GitHub (`gh auth login`) or have a credential helper, OR
-- Deploy a read-only deploy key / token via MDM, OR
-- If you prefer zero-auth fetching and are comfortable with the templates being public,
-  create the repo `--public` instead and skip this section.
+## Updating the skill later
 
-## Step 3 — Verify
-
-On a test machine after deployment:
-1. Launch Claude Code.
-2. Ask: "Make an Asuer privacy policy PDF from this text …".
-3. Confirm the `asuer-pdf` skill activates and a branded PDF is produced.
-
-## Updating later
-
-1. Edit the skill under `plugins/asuer-pdf/skills/asuer-pdf/`.
-2. Bump `version` in `plugins/asuer-pdf/.claude-plugin/plugin.json`.
-3. Commit and push. Machines pick up the update on the next marketplace refresh.
+1. Edit files under `plugins/asuer-pdf/skills/asuer-pdf/` (the source of truth).
+2. Rebuild the installer bundle: copy that folder to `dist/asuer-pdf-skill/skill/` and
+   re-zip; re-share (Method A) or re-push (Method B/C).

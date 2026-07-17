@@ -1,0 +1,131 @@
+---
+name: asuer-pdf
+description: >-
+  Produce a polished, on-brand Asuer document as a PDF. Use this whenever the user asks
+  to make, create, write, draft, put together or generate a document or a PDF of any kind:
+  a policy or legal document (privacy policy, T&Cs, PAIA manual, complaint or conflict
+  policy), a business letter, an internal memo, a meeting agenda or minutes, or a
+  specification or report. Also trigger on generic requests like "make a doc", "create a
+  PDF", "turn this into a PDF", "write it up", "put this on a letterhead" or "export to
+  PDF". Renders HTML to A4 via headless Chrome with the Asuer letterhead, Poppins, brand
+  blue and a repeating branded footer with page numbers; every type has a cover-page and a
+  no-cover variant. Default to this skill for any document or PDF output so results come out
+  branded and consistent.
+---
+
+# Asuer PDF
+
+Generate polished, on-brand Asuer PDF documents. HTML in, A4 PDF out, rendered with
+Google Chrome (headless) via `render.mjs`, with no npm dependencies.
+
+When someone asks for a document or a PDF, default to this skill so the output is branded
+and consistent, even if they do not say the word "Asuer".
+
+## Quick start
+
+1. **Pick the closest starting point** from `examples/` (each is a real, well-formed
+   document you edit, not a blank shell):
+   - `privacy-policy.html`: Policy / legal (numbered principles, sections)
+   - `business-letter.html`: Business letter (addressee, salutation, signature)
+   - `internal-memo.html`: Internal memo (To/From/Date/Re, table, callout)
+   - `meeting-minutes.html`: Meeting agenda & minutes (attendees, agenda, action items)
+   - `specification.html`: Specification / report (contents, numbered sections, requirements table)
+   - Each also has a `*-cover.html` variant with a cover page (built by `build-variants.mjs`).
+2. **Copy it** to your working folder and **replace the content**, keeping the structure,
+   classes and `{{SKILL}}` asset references.
+3. **Render**: `node render.mjs <your.html> <output.pdf>`, then open in **UPDF**
+   (`open -a UPDF <output.pdf>`, Paul's preferred PDF viewer).
+
+## Document types (5)
+
+| Type | Use for | Starting file |
+|---|---|---|
+| Policy / legal | Privacy Policy, T&Cs, PAIA manual, complaint/conflict policies | `privacy-policy.html` |
+| Business letter | Formal external correspondence | `business-letter.html` |
+| Internal memo | Internal notes, briefs, announcements | `internal-memo.html` |
+| Meeting agenda & minutes | Agendas, minutes, decisions, action items | `meeting-minutes.html` |
+| Specification / report | Technical/product specs, handovers, reports | `specification.html` |
+
+Each type has **two variants**:
+- **No-cover**: letterhead + title block + content on page 1 (the `*.html` sources).
+- **With cover**: a full cover page, then content from page 2 (the `*-cover.html` files).
+  Regenerate all cover variants from the no-cover sources with `node build-variants.mjs`.
+
+## Design rules (locked, do not deviate)
+
+These were signed off. Keep them exactly.
+
+- **Logo is always the blue-block inverted lockup** (`assets/asuer-logo-inverted.svg`):
+  the white icon + wordmark on the brand-blue rectangle. Never the colour-on-white logo.
+- **Letterhead logo is large**, its height tuned to match the height of the contact-line
+  stack (currently `29mm`), so the top and bottom of the logo align with the contact lines.
+- **Contact lines are uniform**: same ink colour, never bold, and the website link is the
+  same colour as the rest (not blue). Always the same **5 lines** (company, address, phone,
+  email, website), each with its Plump Duo icon.
+- **Consistent spacing under the logo** before the first line of text, across every type
+  (driven by the `.letterhead` margin; no ad-hoc top margins on the first element).
+- **Lead numbered list** (`ol.lead`, the big blue principle list) has a tight
+  number-to-text gap and tight vertical rhythm. Do not widen it.
+- **Cover page** is a centred masthead (logo centred at top), then a centred title block
+  (kicker, title, subtitle) in the middle, then a **meta block bottom-left with icons**.
+  The **company details appear on the cover only for legal/policy documents**
+  (`showContact: true` in `build-variants.mjs`); all other covers show just the logo.
+- **Footer repeats on every page**: muted Asuer mark (left), document name (centre),
+  `n / N` page number (right). Set the document name via the `pdf-config` footer field.
+- **Typography**: Poppins throughout; brand blue `#005d8b` for headings, numbers, accents
+  and the eyebrow kicker; ink `#1f2b38` for body.
+- **Icons**: Streamline Plump Duo only, brand-blue duotone (`#005d8b` + `#B9D4E1`). Reuse
+  the ones in `assets/icons/`; fetch more from the Streamline MCP in the same style.
+- **Copy style (Asuer house rules)**: South African English; **no em dashes and no spaced
+  hyphens** (use commas, colons, parentheses or full stops); **no all-caps** in prose (the
+  small letter-spaced eyebrow kicker is the one allowed uppercase device); never write
+  "Asuer" as anything else; keep marketing-style copy positive.
+
+## How rendering works
+
+`render.mjs` launches Chrome headless, loads the HTML, waits for web fonts, and calls
+DevTools `Page.printToPDF` with A4 size, the configured margins, and a footer template
+(mark + doc name + page numbers).
+
+- **`{{SKILL}}` token**: templates reference assets as `{{SKILL}}/styles.css`,
+  `{{SKILL}}/assets/asuer-logo-inverted.svg`, `{{SKILL}}/assets/icons/ic_*.svg`.
+  `render.mjs` rewrites `{{SKILL}}` to this skill's own folder at render time, so a working
+  copy of the HTML can live anywhere.
+- **Per-document config**, placed in the `<head>`:
+  ```html
+  <script type="application/json" id="pdf-config">
+  { "footer": "Privacy Policy", "margin": { "top": 15, "bottom": 16, "left": 15, "right": 15 } }
+  </script>
+  ```
+  `footer` is the centred footer label (falls back to the `<title>` minus " | Asuer").
+  Margins are millimetres. Use `"footer": false` (or `--no-footer`) for no footer.
+- **CLI**: `node render.mjs input.html output.pdf [--footer "Name"] [--top 15] [--bottom 16] [--left 15] [--right 15] [--no-footer]`
+
+## Building the cover variants
+
+`build-variants.mjs` derives every `*-cover.html` from its no-cover source (strips the
+letterhead + title, prepends the standard cover). It is the **single definition** of the
+cover, so all covers stay consistent. Edit the cover there (kicker/title/subtitle/meta, and
+`showContact` for legal docs), then run `node build-variants.mjs`.
+
+## Assets
+
+- `assets/asuer-logo-inverted.svg`: blue-block white lockup (letterhead + cover)
+- `assets/asuer-mark.svg`: bird mark (greyed + cropped for the footer by `render.mjs`)
+- `assets/asuer-logo-colour.svg`: colour lockup (not used by default; keep the blue block)
+- `assets/icons/`: Plump Duo duotone icons: `ic_company, ic_pin, ic_phone, ic_mail, ic_globe`
+  (contact) and `ic_calendar, ic_clock, ic_user, ic_users, ic_info, ic_tag` (content + cover meta)
+- `styles.css`: the canonical design system (letterhead, cover, headings, lists, tables,
+  callouts, footer-safe spacing). One source of truth; do not fork per document.
+
+## Requirements
+
+Google Chrome (or Chromium) installed, Node 22+ (the renderer uses Node's built-in DevTools
+client, so no `npm install`), and internet at render time so the Poppins web font loads.
+
+## Gotchas
+
+- Each render spawns and kills its own Chrome (roughly 10 to 15 seconds). Render
+  sequentially; do not run many in one shell call that could time out (batch a few at a time).
+- Keep the eyebrow kicker in sentence case in the source (`Policy`, `Specification`); the
+  uppercase look is applied by CSS `text-transform`, so it is not a house-rule all-caps breach.

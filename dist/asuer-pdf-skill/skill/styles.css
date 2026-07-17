@@ -1,0 +1,160 @@
+/* ============================================================
+   Asuer PDF — design system (canonical)
+   Poppins throughout · brand blue #005d8b · A4 · print-first
+   Page margins are applied by render.mjs (DevTools printToPDF),
+   so the body flows edge-to-edge inside the content box.
+   ============================================================ */
+
+:root{
+  --blue:#005d8b;        /* brand primary — headings, numbers, accents, links */
+  --blue-deep:#004a70;   /* darker blue for large titles if needed */
+  --blue-tint:#e7f0f5;   /* faint blue fill (callouts, table head) */
+  --ink:#1f2b38;         /* body text (dark navy) */
+  --ink-soft:#3a4756;
+  --muted:#5c6b7a;       /* secondary text */
+  --rule:#dde4ea;        /* hairline rules */
+  --rule-soft:#eef2f6;
+  --footer:#9aa0a6;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Poppins","Helvetica Neue",Arial,sans-serif;
+  color:var(--ink);
+  font-size:10.5pt;
+  line-height:1.55;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* ---------- Letterhead (page 1) ---------- */
+.letterhead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:16px;
+}
+.letterhead .logo-block{flex:0 0 auto;}
+/* Bigger logo: its height is tuned to match the contact-line stack. */
+.letterhead .logo-block img{height:29mm;width:auto;display:block;}
+.letterhead .contact{
+  flex:0 1 auto;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  font-size:8.6pt;
+  line-height:1.3;
+  font-weight:400;            /* never bold */
+  color:var(--ink);           /* every line the same colour */
+}
+.letterhead .contact .row{display:flex;align-items:flex-start;gap:8px;}
+.letterhead .contact .row img{width:13px;height:13px;flex:0 0 13px;margin-top:1px;}
+.letterhead .contact a{color:inherit;text-decoration:none;}  /* link matches the rest */
+
+/* ---------- Title block ---------- */
+.doc-head{border-bottom:1.5px solid var(--rule);padding-bottom:10px;margin-bottom:14px;}
+.doc-kicker{
+  font-size:8.5pt;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--blue);margin:0 0 3px;
+}
+.doc-title{font-size:23pt;font-weight:700;color:var(--ink);margin:0;line-height:1.1;letter-spacing:-.01em;}
+.doc-subtitle{font-size:10.5pt;color:var(--muted);margin:6px 0 0;}
+
+/* ---------- Body typography ---------- */
+p{margin:0 0 9px;}
+h2,.h2{font-size:14pt;font-weight:700;color:var(--blue);margin:20px 0 6px;line-height:1.25;}
+h3,.h3{font-size:11.5pt;font-weight:600;color:var(--ink);margin:16px 0 5px;}
+strong,b{font-weight:600;}
+a{color:var(--blue);}
+hr{border:0;border-top:1px solid var(--rule);margin:16px 0;}
+
+/* ---------- Lead numbered list (the big blue principles) ----------
+   Spacing fix: tight marker→text gap, tighter vertical rhythm. */
+ol.lead{list-style:none;counter-reset:lead;margin:10px 0 4px;padding:0;}
+ol.lead>li{
+  counter-increment:lead;
+  position:relative;
+  padding-left:26px;          /* was very wide — tightened */
+  margin:0 0 9px;
+  font-size:12pt;font-weight:700;color:var(--blue);line-height:1.3;
+}
+ol.lead>li::before{
+  content:counter(lead)".";
+  position:absolute;left:0;top:0;
+  width:22px;                 /* marker column */
+  font-weight:700;color:var(--blue);
+}
+
+/* ---------- Standard bullet list ---------- */
+ul{list-style:none;margin:8px 0 10px;padding:0;}
+ul>li{position:relative;padding-left:16px;margin:0 0 5px;line-height:1.5;}
+ul>li::before{
+  content:"";position:absolute;left:2px;top:.62em;
+  width:4px;height:4px;border-radius:50%;background:var(--blue);
+}
+ul.spaced>li{margin-bottom:8px;}
+
+/* ---------- Ordered list (plain, for clauses) ---------- */
+ol{margin:8px 0 10px;padding-left:20px;}
+ol>li{margin:0 0 6px;padding-left:4px;line-height:1.5;}
+
+/* ---------- Tables ---------- */
+table{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:9.5pt;}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top;}
+thead th{background:var(--blue);color:#fff;font-weight:600;border-bottom:0;}
+tbody tr:nth-child(even){background:var(--rule-soft);}
+table.plain thead th{background:var(--blue-tint);color:var(--blue);}
+
+/* ---------- Callout / note ---------- */
+.callout{
+  display:flex;gap:11px;align-items:flex-start;
+  background:var(--blue-tint);border-left:3px solid var(--blue);
+  padding:11px 14px;border-radius:0 6px 6px 0;margin:12px 0;font-size:9.8pt;
+}
+.callout .callout-ic{flex:0 0 18px;width:18px;height:18px;margin-top:1px;}
+.callout .callout-ic img{width:100%;height:100%;display:block;}
+.callout .callout-body{flex:1 1 auto;min-width:0;}
+.callout .callout-title{font-weight:600;color:var(--blue);margin:0 0 3px;}
+
+/* ---------- Cover page (any type, optional) — centred masthead ---------- */
+.cover{min-height:calc(297mm - 31mm);display:flex;flex-direction:column;page-break-after:always;text-align:center;}
+.cover .cover-mast{padding-top:4mm;}
+.cover .cover-logo{width:66mm;margin:0 auto 12px;}      /* logo centred */
+.cover .cover-logo img{width:100%;display:block;}
+.cover .cover-contact{font-size:8.6pt;color:var(--ink);line-height:1.65;}  /* details below, centred */
+.cover .cover-body{margin:auto 0;}                      /* title block vertically centred */
+.cover .cover-kicker{font-size:10pt;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin:0;}
+.cover .cover-title{font-size:34pt;font-weight:800;color:var(--ink);line-height:1.05;margin:10px 0 14px;letter-spacing:-.015em;}
+.cover .cover-subtitle{font-size:11.5pt;color:var(--muted);line-height:1.5;margin:0 auto;max-width:140mm;}
+.cover .cover-meta{text-align:left;font-size:10pt;color:var(--muted);}   /* bottom-left */
+.cover .cover-meta .m-row{display:flex;align-items:center;gap:9px;margin-bottom:5px;}
+.cover .cover-meta .m-row img{width:14px;height:14px;flex:0 0 14px;}
+.cover .cover-meta b{color:var(--ink);font-weight:600;}
+
+/* ---------- Table of contents ---------- */
+.toc{margin:6px 0 0;}
+.toc .toc-row{display:flex;justify-content:space-between;border-bottom:1px dotted var(--rule);padding:6px 0;}
+.toc .toc-row .t{color:var(--ink);}
+.toc .toc-row .n{color:var(--muted);}
+
+/* ---------- Letter / memo meta ---------- */
+.meta{margin:6px 0 18px;font-size:10pt;line-height:1.5;}
+.meta .meta-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:3px;}
+.meta .meta-row img{width:13px;height:13px;flex:0 0 13px;margin-top:3px;}
+.meta .meta-row .k{color:var(--muted);min-width:72px;font-weight:500;}
+.salutation{margin:14px 0 10px;}
+.sign-block{margin-top:26px;}
+.sign-block .sign-name{font-weight:600;margin-top:2px;}
+.sign-block .sign-role{color:var(--muted);}
+
+/* ---------- Action-item / minutes helpers ---------- */
+.pill{display:inline-block;font-size:8pt;font-weight:600;padding:2px 8px;border-radius:10px;
+  background:var(--blue-tint);color:var(--blue);}
+
+/* ---------- Utilities ---------- */
+.small{font-size:9pt;color:var(--muted);}
+.mt0{margin-top:0;}
+.page-break{page-break-before:always;}
+.no-break{page-break-inside:avoid;}

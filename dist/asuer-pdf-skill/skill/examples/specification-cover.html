@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Specification | Asuer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{SKILL}}/styles.css">
+<script type="application/json" id="pdf-config">
+{ "footer": "Funeral Quote Builder v2 · Specification", "margin": { "top": 15, "bottom": 16, "left": 15, "right": 15 } }
+</script>
+</head>
+<body>
+  <section class="cover">
+    <div class="cover-mast">
+      <div class="cover-logo"><img src="{{SKILL}}/assets/asuer-logo-inverted.svg" alt="Asuer"></div>
+    </div>
+    <div class="cover-body">
+      <p class="cover-kicker">Specification</p>
+      <h1 class="cover-title">Funeral Quote Builder v2</h1>
+      <p class="cover-subtitle">A stepped, multi-life quoting experience that turns an enquiry into a submitted application in under three minutes.</p>
+    </div>
+    <div class="cover-meta">
+      <div class="m-row"><img src="{{SKILL}}/assets/icons/ic_tag.svg" alt=""><span><b>Version</b>&nbsp;&nbsp;2.0 (draft)</span></div>
+      <div class="m-row"><img src="{{SKILL}}/assets/icons/ic_calendar.svg" alt=""><span><b>Date</b>&nbsp;&nbsp;17 July 2026</span></div>
+      <div class="m-row"><img src="{{SKILL}}/assets/icons/ic_user.svg" alt=""><span><b>Author</b>&nbsp;&nbsp;Product &amp; Engineering, Asuer</span></div>
+      <div class="m-row"><img src="{{SKILL}}/assets/icons/ic_info.svg" alt=""><span><b>Status</b>&nbsp;&nbsp;For review</span></div>
+    </div>
+  </section>
+
+<!-- ===== Contents ===== -->
+  <h2 class="mt0">Contents</h2>
+  <div class="toc">
+    <div class="toc-row"><span class="t">1. Overview</span><span class="n">2</span></div>
+    <div class="toc-row"><span class="t">2. Goals &amp; non-goals</span><span class="n">2</span></div>
+    <div class="toc-row"><span class="t">3. User flow</span><span class="n">2</span></div>
+    <div class="toc-row"><span class="t">4. Functional requirements</span><span class="n">3</span></div>
+    <div class="toc-row"><span class="t">5. Out of scope</span><span class="n">3</span></div>
+  </div>
+
+  <h2>1. Overview</h2>
+  <p>The Funeral Quote Builder lets a customer or an independent sales representative assemble cover for a whole family in one flow, see a clear premium, and move straight into an application. Version 2 replaces the single long form with a guided, stepped experience and a per-life summary.</p>
+
+  <h2>2. Goals &amp; non-goals</h2>
+  <ul>
+    <li><strong>Goal:</strong> reduce time-to-quote to under three minutes for a family of four.</li>
+    <li><strong>Goal:</strong> make per-life pricing legible before the customer commits.</li>
+    <li><strong>Goal:</strong> hand a complete, validated payload to the application step.</li>
+    <li><strong>Non-goal:</strong> underwriting logic changes (rates and rules are unchanged for v2).</li>
+  </ul>
+
+  <h2>3. User flow</h2>
+  <ol>
+    <li>Choose the main member and cover tier.</li>
+    <li>Add additional lives (spouse, children, extended family) with per-life tiers.</li>
+    <li>Review a per-life and total premium summary.</li>
+    <li>Confirm and continue to the application, carrying the quote forward.</li>
+  </ol>
+
+  <div class="callout">
+    <span class="callout-ic"><img src="{{SKILL}}/assets/icons/ic_info.svg" alt=""></span>
+    <div class="callout-body">
+      <p class="callout-title">Design principle</p>
+      <p style="margin:0">Every step must be answerable in one screen without scrolling on a mid-range phone. If a step needs scrolling, it needs splitting.</p>
+    </div>
+  </div>
+
+  <h2>4. Functional requirements</h2>
+  <table>
+    <thead>
+      <tr><th style="width:16%">Ref</th><th>Requirement</th><th style="width:20%">Priority</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>FR-1</td><td>Support up to 8 lives across the 5 defined relationship groups.</td><td>Must</td></tr>
+      <tr><td>FR-2</td><td>Show a live total premium that updates as lives and tiers change.</td><td>Must</td></tr>
+      <tr><td>FR-3</td><td>Persist the quote so a returning user resumes where they left off.</td><td>Should</td></tr>
+      <tr><td>FR-4</td><td>Pass the full quote payload to <code>/insure-funeral/apply</code> as structured data.</td><td>Must</td></tr>
+      <tr><td>FR-5</td><td>Offer a shareable quote summary the representative can send on WhatsApp.</td><td>Could</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Out of scope</h2>
+  <p>Payment collection, policy issue, and document generation are handled downstream and are explicitly out of scope for this specification.</p>
+
+</body>
+</html>
