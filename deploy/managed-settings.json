@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "asuer-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "PO73-Git/asuer-claude-plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "asuer-pdf@asuer-plugins": true,
+    "ict-ticket@asuer-plugins": true
+  }
+}
