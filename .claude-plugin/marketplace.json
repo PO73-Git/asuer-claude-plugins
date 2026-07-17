@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "asuer-pdf",
-      "description": "Create Asuer-branded PDF documents — policy/legal, business letter, internal memo, meeting agenda/minutes, specification/report — from HTML, rendered to A4 with the Asuer letterhead, Poppins, brand blue and a repeating branded footer. Cover and no-cover variants of every type.",
+      "description": "Generate on-brand Asuer documents as PDFs (policy/legal, business letter, internal memo, meeting agenda or minutes, specification or report) from HTML, rendered to A4 with the Asuer letterhead, Poppins, brand blue and a repeating branded footer. Triggers whenever you ask to make a document or a PDF. Cover and no-cover variants of every type.",
       "author": { "name": "Asuer", "email": "paul@asuer.co.za" },
       "category": "productivity",
       "source": "./plugins/asuer-pdf"
